@@ -1,0 +1,31 @@
+on:
+  schedule:
+   - cron: '41 * * * *'
+
+jobs:
+  delete_old_archives:
+    runs-on: ubuntu-latest
+    name: A job to delete old archives from Azure
+    steps:
+
+    - name: Checkout scripts
+      uses: actions/checkout@v2
+
+    - name: Checkout mathlib
+      run: git clone https://github.com/leanprover-community/mathlib
+
+    - name: Install gitstats
+      run: apt-get install gitstats
+
+    - name: Run gitstats
+      run: gitstats mathlib --outpath=docs
+
+    - name: push results
+      uses: EndBug/add-and-commit@v4
+      with:
+        add: 'docs'
+        author_name: 'leanprover-community-bot'
+        author_email: 'leanprover.community@gmail.com'
+        message: 'Update gitstats'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
