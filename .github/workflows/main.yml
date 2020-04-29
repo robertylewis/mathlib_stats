@@ -1,6 +1,6 @@
 on:
   schedule:
-   - cron: '3 * * * *'
+   - cron: '21 * * * *'
 
 jobs:
   delete_old_archives:
@@ -25,6 +25,10 @@ jobs:
         bash nolint_graph.sh > nolint_graph_out.txt
         cut -f2 -d: nolint_graph.sh > rev_stats.txt
         gnuplot plot.gnu
+
+    - name: List docs dir
+      if: always()
+      run: ls docs
 
     - name: push results
       if: always()
