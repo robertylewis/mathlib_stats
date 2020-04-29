@@ -1,6 +1,6 @@
 on:
   schedule:
-   - cron: '21 * * * *'
+   - cron: '50 * * * *'
 
 jobs:
   delete_old_archives:
@@ -18,7 +18,7 @@ jobs:
       run: sudo apt-get install gitstats gnuplot
 
     - name: Run gitstats
-      run: gitstats mathlib --outpath=docs
+      run: gitstats mathlib docs
 
     - name: Make nolints graph
       run: | 
