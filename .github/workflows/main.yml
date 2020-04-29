@@ -1,6 +1,6 @@
 on:
   schedule:
-   - cron: '41 * * * *'
+   - cron: '49 * * * *'
 
 jobs:
   delete_old_archives:
@@ -14,11 +14,17 @@ jobs:
     - name: Checkout mathlib
       run: git clone https://github.com/leanprover-community/mathlib
 
-    - name: Install gitstats
-      run: apt-get install gitstats
+    - name: Install packages
+      run: sudo apt-get install gitstats gnuplot
 
     - name: Run gitstats
       run: gitstats mathlib --outpath=docs
+
+    - name: Make nolints graph
+      run: | 
+        bash nolint_graph.sh > nolint_graph_out.txt
+        cut -f2 -d: nolint_graph.sh > rev_stats.txt
+        gnuplot plot.gp
 
     - name: push results
       uses: EndBug/add-and-commit@v4
